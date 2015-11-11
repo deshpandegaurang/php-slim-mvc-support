@@ -7,6 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Slim' => array($vendorDir . '/slim/slim'),
+<<<<<<< HEAD
     'MVC' => array($vendorDir),
     'Controller' => array($baseDir . '/app'),
+=======
+>>>>>>> 15175a818315ee24d576e8ec8f94fd1a038de910
 );
