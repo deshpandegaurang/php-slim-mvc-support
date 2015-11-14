@@ -13,4 +13,9 @@ Class MainController extends \MVC\MvcController{
 
         echo "Test Page";
     }
+
+    public function testVariable( $variable ){
+
+        echo $variable;
+    }
 }

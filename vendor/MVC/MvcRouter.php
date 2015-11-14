@@ -12,6 +12,8 @@ class MvcRouter{
 		$env = \Slim\Environment::getInstance();
         $this->request = new \Slim\Http\Request($env);
         $this->path = "";
+
+
 	}
 	
 	public function registerRoute( $method , $path , $route_string ){
@@ -36,7 +38,7 @@ class MvcRouter{
 	    $function = ($route_string != "") ? $route_string : "index";
 	 
 	    $func = function () use ($class, $function) {
-	        
+
 	        $class = '\Controller\\' . $class;
 	        
 	        $class = new $class();
@@ -44,7 +46,8 @@ class MvcRouter{
 	        $args = func_get_args();
 	 
 	        return call_user_func_array(array($class, $function), $args);
-	    };
+	    
+		};
 	 
 	    return $func;
 	}
