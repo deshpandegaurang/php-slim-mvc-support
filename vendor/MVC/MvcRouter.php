@@ -9,11 +9,10 @@ class MvcRouter{
 
 	public function __construct(){
 
-		$env = \Slim\Environment::getInstance();
-        $this->request = new \Slim\Http\Request($env);
-        $this->path = "";
-
-
+		$env 				= \Slim\Environment::getInstance();
+        $this->request  	= new \Slim\Http\Request($env);
+        $this->path 		= "";
+        $this->route_array  = array();
 	}
 	
 	public function registerRoute( $method , $path , $route_string ){
@@ -52,24 +51,47 @@ class MvcRouter{
 	    return $func;
 	}
 
-	public function run( $method , $path , $route_string ){
+	public function run(){
 
-	    $not_found = true;
-	    
-	    $this->registerRoute( $method , $path , $route_string );
+		$route_array = $this->route_array;
+		    
+		$not_found = true;
 
-	    $url = $this->request->getResourceUri();
-	    $method = $this->request->getMethod();
-	         
-        if ($this->path->matches($url)) {
-            if ($this->path->supportsHttpMethod($method) || $this->path->supportsHttpMethod("ANY")) {
-                call_user_func_array($this->path->getCallable(), array_values($this->path->getParams()));
-                $not_found = false;
-            }
-        }
-    	 
-	    if ($not_found) {
-	        echo "404 - route not found";
+		foreach( $route_array as $key => $value ){
+		    
+		    $this->registerRoute( $value['method'] , $value['path'] , $value['route_string'] );
+
+		    $url = $this->request->getResourceUri();
+		    $method = $this->request->getMethod();
+		         
+	        if ($this->path->matches($url)) {
+	            if ($this->path->supportsHttpMethod($method) || $this->path->supportsHttpMethod("ANY")) {
+	                call_user_func_array($this->path->getCallable(), array_values($this->path->getParams()));
+	                $not_found = false;
+	            }
+	        }
 	    }
+
+	    if( $not_found ){
+
+	    	$this->throwNotFound();
+	    }    	 
 	}
+
+	public function register( $method , $path , $route_string ){
+		
+		$one_route 			 	   = array();
+		
+		$one_route['method'] 	   = $method;
+		$one_route['path'] 		   = $path;
+		$one_route['route_string'] = $route_string;
+
+		$this->route_array[] 	   = $one_route;
+	}
+
+	public function throwNotFound(){
+
+		echo "not found";
+	}
+
 }

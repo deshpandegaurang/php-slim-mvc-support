@@ -1,7 +1,7 @@
 <?php
 
-$app->router->run( 'GET' , '/test' , 'MainController@test' );
+$app->router->register( 'GET' , '/test' , 'MainController@test' );
 
-$app->router->run( 'GET' , '/test/:variable' , 'MainController@testVariable' );
+$app->router->register( 'GET' , '/test/:variable' , 'MainController@testVariable' );
 
  
